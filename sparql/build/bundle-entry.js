@@ -33,6 +33,26 @@ SELECT ?predName ?succName WHERE {
 }`,
   },
   {
+    label: '"진안동국민학교" 명칭의 시기별 학교',
+    query: `${PREFIXES}
+SELECT ?schoolId ?currentName ?begin ?end
+WHERE {
+  ?name rico:name "진안동국민학교"@ko .
+
+  ?apprel rico:relationHasSource ?name ;
+          rico:relationHasTarget ?school ;
+          rico:hasBeginningDate ?beginNode ;
+          rico:hasEndDate ?endNode .
+
+  ?beginNode rico:normalizedDateValue ?begin .
+  ?endNode   rico:normalizedDateValue ?end .
+
+  ?school rico:identifier ?schoolId ;
+          rico:name ?currentName .
+}
+ORDER BY ?begin`,
+  },
+  {
     label: '타입별 개체 수',
     query: `${PREFIXES}
 SELECT ?type (COUNT(?s) AS ?count) WHERE {

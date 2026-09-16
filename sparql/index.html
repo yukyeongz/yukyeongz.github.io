@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>진안 학교 전거레코드 — SPARQL 조회 (테스트)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: -apple-system, "Malgun Gothic", sans-serif; max-width: 960px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+  h1 { font-size: 1.3rem; }
+  .subtitle { color: #666; font-size: 0.9rem; margin-top: -0.5rem; }
+  textarea { width: 100%; height: 8rem; font-family: ui-monospace, Consolas, monospace; font-size: 0.85rem; box-sizing: border-box; padding: 0.5rem; }
+  #examples { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0; }
+  #examples button { font-size: 0.8rem; padding: 0.3rem 0.6rem; cursor: pointer; }
+  #run-btn { margin-top: 0.5rem; padding: 0.5rem 1.2rem; font-weight: bold; cursor: pointer; }
+  .status { margin: 0.6rem 0; font-size: 0.85rem; color: #555; }
+  .status.error { color: #c00; }
+  #triple-count { font-size: 0.8rem; color: #888; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.85rem; margin-top: 0.5rem; }
+  th, td { border: 1px solid #ccc; padding: 0.3rem 0.5rem; text-align: left; word-break: break-all; }
+  th { background: #f0f0f0; }
+  .result-count { font-weight: bold; margin: 0.5rem 0 0.2rem; }
+  @media (prefers-color-scheme: dark) {
+    .subtitle { color: #aaa; }
+    .status { color: #bbb; }
+    #triple-count { color: #999; }
+    th { background: #333; }
+    th, td { border-color: #555; }
+  }
+</style>
+</head>
+<body>
+  <h1>진안 학교 전거레코드 — SPARQL 조회 (테스트)</h1>
+  <p class="subtitle">브라우저 내에서 public.ttl을 직접 파싱해 SPARQL로 질의합니다(서버 없음, N3.js + Comunica).</p>
+  <p id="triple-count"></p>
+
+  <div id="examples"></div>
+  <textarea id="query-box" spellcheck="false"></textarea>
+  <br>
+  <button id="run-btn">쿼리 실행</button>
+  <p id="status" class="status">불러오는 중...</p>
+  <div id="results"></div>
+
+  <script src="./bundle.js"></script>
+</body>
+</html>

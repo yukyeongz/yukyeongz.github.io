@@ -1,0 +1,10 @@
+{
+  "name": "jinan-sparql-page-build",
+  "private": true,
+  "devDependencies": {
+    "n3": "^1.17.0",
+    "@comunica/query-sparql-rdfjs-lite": "^4.0.0",
+    "esbuild": "^0.23.0",
+    "jsdom": "^25.0.0"
+  }
+}

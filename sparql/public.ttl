@@ -1013,14 +1013,9 @@
     rico:relationHasSource <https://jbschools.kr/id/name/NN_00173> ;
     rico:relationHasTarget <https://jbschools.kr/id/school/S_00066> .
 
-<https://jbschools.kr/id/apprel/NN_00174_S_00066_1> a rico:AppellationRelation ;
+<https://jbschools.kr/id/apprel/NN_00174_S_00066> a rico:AppellationRelation ;
     rico:hasBeginningDate <https://jbschools.kr/id/event/R_006818/date/occurred> ;
     rico:hasEndDate <https://jbschools.kr/id/event/R_006949/date/occurred> ;
-    rico:relationHasSource <https://jbschools.kr/id/name/NN_00174> ;
-    rico:relationHasTarget <https://jbschools.kr/id/school/S_00066> .
-
-<https://jbschools.kr/id/apprel/NN_00174_S_00066_2> a rico:AppellationRelation ;
-    rico:hasBeginningDate <https://jbschools.kr/id/event/R_006948/date/occurred> ;
     rico:relationHasSource <https://jbschools.kr/id/name/NN_00174> ;
     rico:relationHasTarget <https://jbschools.kr/id/school/S_00066> .
 
@@ -40525,13 +40520,6 @@
     rico:hasOrHadParticipant <https://jbschools.kr/id/school/S_00066> ;
     rico:occurredAtDate <https://jbschools.kr/id/event/R_006947/date/occurred> .
 
-<https://jbschools.kr/id/event/R_006948> a rico:Activity ;
-    jb:isKindergartenRelated false ;
-    rico:generalDescription "진안종합고등학교 개편(농과3, 농가정과3, 보통과 6학급)"@ko ;
-    rico:hasActivityType jb:NAME_CHANGE ;
-    rico:hasOrHadParticipant <https://jbschools.kr/id/school/S_00066> ;
-    rico:occurredAtDate <https://jbschools.kr/id/event/R_006948/date/occurred> .
-
 <https://jbschools.kr/id/event/R_006949> a rico:Activity ;
     jb:isKindergartenRelated false ;
     rico:generalDescription "진안고등학교 개편"@ko ;
@@ -40998,8 +40986,8 @@
     rico:relationHasSource <https://jbschools.kr/id/school/S_00014> ;
     rico:relationHasTarget <https://jbschools.kr/id/school/S_00016> .
 
-<https://jbschools.kr/id/relation/S_00016_merges_into_S_00014_1999-08.-31> a rico:AgentTemporalRelation ;
-    rico:relationHasDate <https://jbschools.kr/id/relation/S_00016_merges_into_S_00014_1999-08.-31/date/occurred> ;
+<https://jbschools.kr/id/relation/S_00016_merges_into_S_00014_1999-08-31> a rico:AgentTemporalRelation ;
+    rico:relationHasDate <https://jbschools.kr/id/relation/S_00016_merges_into_S_00014_1999-08-31/date/occurred> ;
     rico:relationHasSource <https://jbschools.kr/id/school/S_00016> ;
     rico:relationHasTarget <https://jbschools.kr/id/school/S_00014> .
 
@@ -41186,9 +41174,9 @@
     rico:relationHasSource <https://jbschools.kr/id/school/S_00032> ;
     rico:relationHasTarget <https://jbschools.kr/id/school/S_00017> .
 
-<https://jbschools.kr/id/relation/S_00033_is_branch_of_S_00049_1974-04-19> a rico:AgentHierarchicalRelation ;
-    rico:relationHasDate <https://jbschools.kr/id/relation/S_00033_is_branch_of_S_00049_1974-04-19/date/occurred> ;
-    rico:relationHasSource <https://jbschools.kr/id/school/S_00049> ;
+<https://jbschools.kr/id/relation/S_00033_is_branch_of_S_00017_1974-04-19> a rico:AgentHierarchicalRelation ;
+    rico:relationHasDate <https://jbschools.kr/id/relation/S_00033_is_branch_of_S_00017_1974-04-19/date/occurred> ;
+    rico:relationHasSource <https://jbschools.kr/id/school/S_00017> ;
     rico:relationHasTarget <https://jbschools.kr/id/school/S_00033> .
 
 <https://jbschools.kr/id/relation/S_00033_merges_into_S_00017_1994-02-28> a rico:AgentTemporalRelation ;
@@ -63639,8 +63627,9 @@ jb:isKindergartenRelated a rdf:Property ;
     rico:expressedDate "1996-03-01" ;
     rico:normalizedDateValue "1996-03-01"^^xsd:date .
 
-<https://jbschools.kr/id/relation/S_00016_merges_into_S_00014_1999-08.-31/date/occurred> a rico:Date ;
-    rico:expressedDate "1999-08.-31" .
+<https://jbschools.kr/id/relation/S_00016_merges_into_S_00014_1999-08-31/date/occurred> a rico:Date ;
+    rico:expressedDate "1999-08-31" ;
+    rico:normalizedDateValue "1999-08-31"^^xsd:date .
 
 <https://jbschools.kr/id/relation/S_00016_separates_from_S_00014_1960-03-02/date/occurred> a rico:Date ;
     rico:expressedDate "1960-03-02" ;
@@ -63786,7 +63775,7 @@ jb:isKindergartenRelated a rdf:Property ;
     rico:expressedDate "1963-03-01" ;
     rico:normalizedDateValue "1963-03-01"^^xsd:date .
 
-<https://jbschools.kr/id/relation/S_00033_is_branch_of_S_00049_1974-04-19/date/occurred> a rico:Date ;
+<https://jbschools.kr/id/relation/S_00033_is_branch_of_S_00017_1974-04-19/date/occurred> a rico:Date ;
     rico:expressedDate "1974-04-19" ;
     rico:normalizedDateValue "1974-04-19"^^xsd:date .
 
@@ -65945,10 +65934,6 @@ jb:isKindergartenRelated a rdf:Property ;
     rico:expressedDate "1956-03-05" ;
     rico:normalizedDateValue "1956-03-05"^^xsd:date .
 
-<https://jbschools.kr/id/event/R_006948/date/occurred> a rico:Date ;
-    rico:expressedDate "1973-03-01" ;
-    rico:normalizedDateValue "1973-03-01"^^xsd:date .
-
 <https://jbschools.kr/id/event/R_006960/date/occurred> a rico:Date ;
     rico:expressedDate "1981-01-15" ;
     rico:normalizedDateValue "1981-01-15"^^xsd:date .
@@ -66767,6 +66752,10 @@ jb:isKindergartenRelated a rdf:Property ;
     skos:prefLabel "진안농업고등학교"@ko ;
     rico:name "진안농업고등학교"@ko .
 
+<https://jbschools.kr/id/name/NN_00174> a rico:AgentName ;
+    skos:prefLabel "진안종합고등학교"@ko ;
+    rico:name "진안종합고등학교"@ko .
+
 <https://jbschools.kr/id/name/NN_00175> a rico:AgentName ;
     skos:prefLabel "진안고등학교"@ko ;
     rico:name "진안고등학교"@ko .
@@ -67277,10 +67266,6 @@ jb:isKindergartenRelated a rdf:Property ;
         "진안공립심상소학교"@ko,
         "진안제1공립심상소학교"@ko .
 
-<https://jbschools.kr/id/name/NN_00174> a rico:AgentName ;
-    skos:prefLabel "진안종합고등학교"@ko ;
-    rico:name "진안종합고등학교"@ko .
-
 jb:HigherCivicSchool a owl:Class ;
     rdfs:subClassOf schema:School .
 
@@ -67578,6 +67563,21 @@ jb:BRANCH_ESTABLISHED a skos:Concept,
     rico:name "송풍초등학교"@ko ;
     rico:resultedFromTheSplitOf <https://jbschools.kr/id/school/S_00029> .
 
+<https://jbschools.kr/id/school/S_00066> a schema:HighSchool,
+        rico:CorporateBody ;
+    jb:coManagedWith <https://jbschools.kr/id/school/S_00063> ;
+    jb:endedCoManagementWith <https://jbschools.kr/id/school/S_00063> ;
+    jb:status "active" ;
+    rico:hasBeginningDate <https://jbschools.kr/id/school/S_00066/date/beginning> ;
+    rico:hasOrHadAgentName <https://jbschools.kr/id/name/NN_00173>,
+        <https://jbschools.kr/id/name/NN_00174>,
+        <https://jbschools.kr/id/name/NN_00175>,
+        <https://jbschools.kr/id/name/NN_00176>,
+        <https://jbschools.kr/id/name/NN_00177> ;
+    rico:hasOrHadLocation <https://jbschools.kr/id/school/S_00066/place/current> ;
+    rico:identifier "S_00066" ;
+    rico:name "한국기술부사관고등학교"@ko .
+
 jb:PERSONNEL_CHANGE a skos:Concept,
         rico:ActivityType .
 
@@ -67594,21 +67594,6 @@ jb:PERSONNEL_CHANGE a skos:Concept,
     rico:isOrWasSubordinateTo <https://jbschools.kr/id/school/S_00026> ;
     rico:name "진안동초등학교 가막분교장"@ko ;
     rico:wasMergedInto <https://jbschools.kr/id/school/S_00026> .
-
-<https://jbschools.kr/id/school/S_00066> a schema:HighSchool,
-        rico:CorporateBody ;
-    jb:coManagedWith <https://jbschools.kr/id/school/S_00063> ;
-    jb:endedCoManagementWith <https://jbschools.kr/id/school/S_00063> ;
-    jb:status "active" ;
-    rico:hasBeginningDate <https://jbschools.kr/id/school/S_00066/date/beginning> ;
-    rico:hasOrHadAgentName <https://jbschools.kr/id/name/NN_00173>,
-        <https://jbschools.kr/id/name/NN_00174>,
-        <https://jbschools.kr/id/name/NN_00175>,
-        <https://jbschools.kr/id/name/NN_00176>,
-        <https://jbschools.kr/id/name/NN_00177> ;
-    rico:hasOrHadLocation <https://jbschools.kr/id/school/S_00066/place/current> ;
-    rico:identifier "S_00066" ;
-    rico:name "한국기술부사관고등학교"@ko .
 
 <https://jbschools.kr/id/school/S_00026> a schema:ElementarySchool,
         rico:CorporateBody ;
@@ -67723,6 +67708,9 @@ jb:MERGE_INTO a skos:Concept,
     rico:identifier "S_00004" ;
     rico:name "동향초등학교"@ko .
 
+jb:NAME_CHANGE a skos:Concept,
+        rico:ActivityType .
+
 <https://jbschools.kr/id/school/S_00013> a schema:ElementarySchool,
         rico:CorporateBody ;
     jb:status "active" ;
@@ -67751,9 +67739,6 @@ jb:MERGE_INTO a skos:Concept,
     rico:name "부귀초등학교 봉암분교장"@ko ;
     rico:resultedFromTheSplitOf <https://jbschools.kr/id/school/S_00014> ;
     rico:wasMergedInto <https://jbschools.kr/id/school/S_00014> .
-
-jb:NAME_CHANGE a skos:Concept,
-        rico:ActivityType .
 
 <https://jbschools.kr/id/school/S_00041> a schema:ElementarySchool,
         rico:CorporateBody ;
@@ -68147,9 +68132,6 @@ jb:ETC_OPERATIONAL a skos:Concept,
     rico:resultedFromTheSplitOf <https://jbschools.kr/id/school/S_00024> ;
     rico:wasMergedInto <https://jbschools.kr/id/school/S_00024> .
 
-jb:AWARD_RECEIVED a skos:Concept,
-        rico:ActivityType .
-
 <https://jbschools.kr/id/school/S_00049> a schema:ElementarySchool,
         rico:CorporateBody ;
     jb:status "active" ;
@@ -68166,6 +68148,9 @@ jb:AWARD_RECEIVED a skos:Concept,
     rico:identifier "S_00049" ;
     rico:name "진안초등학교"@ko .
 
+jb:AWARD_RECEIVED a skos:Concept,
+        rico:ActivityType .
+
 <https://jbschools.kr/id/school/S_00033> a schema:ElementarySchool,
         rico:CorporateBody ;
     jb:status "closed" ;
@@ -68175,7 +68160,7 @@ jb:AWARD_RECEIVED a skos:Concept,
         <https://jbschools.kr/id/name/NN_00097> ;
     rico:hasOrHadLocation <https://jbschools.kr/id/school/S_00033/place/current> ;
     rico:identifier "S_00033" ;
-    rico:isOrWasSubordinateTo <https://jbschools.kr/id/school/S_00049> ;
+    rico:isOrWasSubordinateTo <https://jbschools.kr/id/school/S_00017> ;
     rico:name "월포국민학교"@ko ;
     rico:resultedFromTheSplitOf <https://jbschools.kr/id/school/S_00017> ;
     rico:wasMergedInto <https://jbschools.kr/id/school/S_00017> .

@@ -27,6 +27,22 @@ function escapeSparqlString(str) {
   return String(str).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 }
 
+// 콤보박스는 학교의 "현재 교명"뿐 아니라 과거에 썼던 모든 교명도 후보로 보여준다
+// (동명이교 구분을 위해 필요). 그런데 학교를 특정하는 나머지 쿼리(2/3/4/6)가
+// `?school rico:name ?x`(현재 교명 하나)로만 필터링하면, 과거 교명을 골랐을 때
+// 학교 자체를 못 찾아 "결과 없음"이 된다(예: "진안농업고등학교" 선택 시 0건 —
+// 실측 확인: 콤보박스 후보 182개 중 114개가 이 함정에 걸림). 대신 "이 학교가
+// 한 번이라도 썼던 이름" 기준(AgentName + hasOrHadAgentName)으로 학교를 찾은 뒤,
+// 화면 표시용 현재 교명은 별도로 다시 조회한다. schoolVar/matchedVar로 변수명을
+// 바꿔 쓸 수 있게 해 "학교 X로 통합되어 들어온 학교"처럼 검색 대상이 ?school이
+// 아니라 ?target인 경우도 재사용한다.
+function resolveSchoolClause(value, schoolVar = 'school', matchedVar = 'matchedSchool') {
+  return `?searchName a rico:AgentName ; skos:prefLabel ?searchLabel .
+  FILTER(STR(?searchLabel) = "${escapeSparqlString(value)}")
+  ?${schoolVar} rico:hasOrHadAgentName ?searchName ;
+          rico:name ?${matchedVar} .`;
+}
+
 const TEMPLATE_GROUPS = [
   {
     category: '1. 동명이교 구분',
@@ -61,8 +77,7 @@ ORDER BY ?begin`,
         build: (value) => `${PREFIXES}
 SELECT ?nameLabel ?begin ?end ?matchedSchool
 WHERE {
-  ?school rico:name ?matchedSchool .
-  FILTER(STR(?matchedSchool) = "${escapeSparqlString(value)}")
+  ${resolveSchoolClause(value)}
   ?school rico:hasOrHadAgentName ?name .
   ?name skos:prefLabel ?nameLabel .
   OPTIONAL {
@@ -86,8 +101,7 @@ ORDER BY ?begin`,
         build: (value) => `${PREFIXES}
 SELECT ?matchedSchool ?relKind ?otherName ?date
 WHERE {
-  ?school rico:name ?matchedSchool .
-  FILTER(STR(?matchedSchool) = "${escapeSparqlString(value)}")
+  ${resolveSchoolClause(value)}
   ?rel a rico:AgentHierarchicalRelation ;
        rico:relationHasSource ?src ;
        rico:relationHasTarget ?tgt ;
@@ -115,8 +129,7 @@ ORDER BY ?date`,
         build: (value) => `${PREFIXES}
 SELECT ?matchedSchool ?targetName ?date ?targetStatus ?nextMergeTargetName ?nextMergeDate
 WHERE {
-  ?school rico:name ?matchedSchool .
-  FILTER(STR(?matchedSchool) = "${escapeSparqlString(value)}")
+  ${resolveSchoolClause(value)}
   ?rel a rico:AgentTemporalRelation ;
        rico:relationHasSource ?school ;
        rico:relationHasTarget ?target ;
@@ -141,8 +154,7 @@ ORDER BY ?date`,
         build: (value) => `${PREFIXES}
 SELECT ?matchedSchool ?sourceName ?date ?sourceStatus
 WHERE {
-  ?target rico:name ?matchedSchool .
-  FILTER(STR(?matchedSchool) = "${escapeSparqlString(value)}")
+  ${resolveSchoolClause(value, 'target')}
   ?rel a rico:AgentTemporalRelation ;
        rico:relationHasSource ?source ;
        rico:relationHasTarget ?target ;
@@ -231,8 +243,7 @@ WHERE {
         // 실측 확인됐다(예: 분교 설치 이력 분기가 통째로 사라짐) — 학교명을 고정하는 패턴을
         // 매 UNION 분기 안에 그대로 복제해 넣는 방식으로 우회한다(다소 장황하지만 안전).
         build: (value) => {
-          const hostBind = `?school rico:name ?matchedSchoolName .
-    FILTER(STR(?matchedSchoolName) = "${escapeSparqlString(value)}")`;
+          const hostBind = resolveSchoolClause(value);
           return `${PREFIXES}
 SELECT ?kind ?detail ?date
 WHERE {

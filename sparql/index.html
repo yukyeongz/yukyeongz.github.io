@@ -2,59 +2,222 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<title>진안 학교 전거레코드 — SPARQL 조회 (테스트)</title>
+<title>진안 학교 역사 찾아보기 — 진안 학교 전거레코드 SPARQL 조회 (시험판)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="진안 지역 학교의 이름 변경, 분교, 통합, 승계, 통합운영 기록을 찾아보는 전거레코드 SPARQL 조회 시연 페이지">
+<meta name="color-scheme" content="light dark">
 <style>
-  :root { color-scheme: light dark; }
-  body { font-family: -apple-system, "Malgun Gothic", sans-serif; max-width: 960px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
-  h1 { font-size: 1.3rem; }
-  .subtitle { color: #666; font-size: 0.9rem; margin-top: -0.5rem; }
-  textarea { width: 100%; height: 8rem; font-family: ui-monospace, Consolas, monospace; font-size: 0.85rem; box-sizing: border-box; padding: 0.5rem; }
-  #examples { margin: 0.6rem 0; }
-  .tpl-group { margin-bottom: 0.6rem; }
-  .tpl-group h3 { font-size: 0.9rem; margin: 0.6rem 0 0.3rem; color: #444; }
-  .tpl-item { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-bottom: 0.3rem; }
-  .tpl-item .tpl-label { font-size: 0.8rem; color: #555; flex: 1 1 260px; }
-  .tpl-item input[type="text"] { width: 100%; padding: 0.3rem 0.4rem; font-size: 0.85rem; box-sizing: border-box; }
-  .combo-wrap { position: relative; flex: 1 1 220px; }
-  .combo-list { display: none; position: absolute; left: 0; right: 0; top: 100%; z-index: 10; max-height: 220px;
-    overflow-y: auto; background: #fff; border: 1px solid #ccc; border-top: none; font-size: 0.85rem; }
-  .combo-item { padding: 0.3rem 0.5rem; cursor: pointer; }
-  .combo-item:hover { background: #eef; }
-  .tpl-item button { font-size: 0.8rem; padding: 0.3rem 0.6rem; cursor: pointer; white-space: nowrap; }
-  #run-btn { margin-top: 0.5rem; padding: 0.5rem 1.2rem; font-weight: bold; cursor: pointer; }
-  .status { margin: 0.6rem 0; font-size: 0.85rem; color: #555; }
-  .status.error { color: #c00; }
-  #triple-count { font-size: 0.8rem; color: #888; }
-  table { border-collapse: collapse; width: 100%; font-size: 0.85rem; margin-top: 0.5rem; }
-  th, td { border: 1px solid #ccc; padding: 0.3rem 0.5rem; text-align: left; word-break: break-all; }
-  th { background: #f0f0f0; }
-  .result-count { font-weight: bold; margin: 0.5rem 0 0.2rem; }
+  /* 성능 원칙: 웹폰트·외부 CSS·이미지 요청 없음(로고는 2KB 인라인), 애니메이션 없음. */
+  :root {
+    --page: #F5F6F8;
+    --surface: #FFFFFF;
+    --sunk: #EEF1F4;
+    --zebra: #F7F8FA;
+    --line: #D9DDE3;
+    --line-strong: #B5BDC8;
+    --ink: #1D2430;
+    --ink-2: #4A5362;
+    --ink-3: #636C7B;
+    --navy: #023064;
+    --navy-hover: #0B4386;
+    --navy-ink: #023064;
+    --on-navy: #FFFFFF;
+    --teal: #00ACA8;
+    --teal-ink: #00706D;
+    --coral-ink: #B23F2A;
+    --coral-bg: #FBECE8;
+    --radius: 6px;
+    --font: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", "Noto Sans KR", "Segoe UI", sans-serif;
+    --mono: ui-monospace, "SFMono-Regular", Consolas, "D2Coding", monospace;
+    color-scheme: light dark;
+  }
   @media (prefers-color-scheme: dark) {
-    .subtitle { color: #aaa; }
-    .status { color: #bbb; }
-    #triple-count { color: #999; }
-    th { background: #333; }
-    th, td { border-color: #555; }
-    .tpl-group h3 { color: #ccc; }
-    .tpl-item .tpl-label { color: #aaa; }
-    .combo-list { background: #222; border-color: #555; }
-    .combo-item:hover { background: #345; }
+    :root {
+      --page: #121820;
+      --surface: #1A212B;
+      --sunk: #222A35;
+      --zebra: #1E2630;
+      --line: #2E3744;
+      --line-strong: #46515F;
+      --ink: #E6EAF0;
+      --ink-2: #B6BFCB;
+      --ink-3: #939DAA;
+      --navy: #2D5C9B;
+      --navy-hover: #3A6CAE;
+      --navy-ink: #A9C4EA;
+      --teal-ink: #4FD1CC;
+      --coral-ink: #F4998A;
+      --coral-bg: #3A221D;
+    }
+    .logo { background: #FFFFFF; border-radius: 8px; padding: 4px; }
+  }
+
+  html { font-size: 100%; }
+  @media (min-width: 1600px) { html { font-size: 106.25%; } } /* 프로젝터·대형 화면 */
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--page); color: var(--ink);
+    font-family: var(--font); font-size: 1rem; line-height: 1.6;
+    word-break: keep-all; overflow-wrap: anywhere;
+    -webkit-text-size-adjust: 100%;
+  }
+  .page { max-width: 1280px; margin: 0 auto; padding: 1.25rem 1rem 2.5rem; }
+  p { margin: 0; }
+  :focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+  /* 머리글 */
+  .site-head { display: flex; align-items: center; gap: 0.875rem; padding-bottom: 1rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--line); }
+  .logo { height: 44px; width: auto; flex: none; }
+  .head-text { flex: 1; min-width: 0; }
+  .head-title { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  h1 { margin: 0; font-size: 1.5rem; line-height: 1.3; font-weight: 700; color: var(--navy-ink); letter-spacing: -0.01em; }
+  .badge { font-size: 0.8125rem; line-height: 1; padding: 0.3rem 0.45rem; border: 1px solid var(--line-strong); border-radius: 4px; color: var(--ink-2); white-space: nowrap; }
+  .subtitle { color: var(--ink-2); font-size: 0.9375rem; margin-top: 0.15rem; }
+  #triple-count { color: var(--ink-3); font-size: 0.875rem; white-space: nowrap; align-self: flex-end; }
+  #triple-count:empty { display: none; }
+
+  /* 2단 배치 */
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+  @media (min-width: 900px) {
+    .layout { grid-template-columns: minmax(300px, 390px) minmax(0, 1fr); align-items: start; }
+    .side { position: sticky; top: 1rem; max-height: calc(100vh - 2rem); overflow-y: auto; padding-right: 0.25rem; }
+  }
+  .section-title { margin: 0 0 0.625rem; font-size: 1.0625rem; font-weight: 700; }
+
+  /* 예시 쿼리 묶음 */
+  .tpl-group { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; margin-bottom: 0.5rem; }
+  .tpl-group[open] { border-color: var(--navy-ink); }
+  .tpl-group > summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+    min-height: 3rem; padding: 0.625rem 0.875rem; cursor: pointer; list-style: none;
+    font-weight: 600; font-size: 1rem;
+  }
+  .tpl-group > summary::-webkit-details-marker { display: none; }
+  .tpl-group > summary::after {
+    content: ""; flex: none; width: 0.5rem; height: 0.5rem; margin-right: 0.25rem;
+    border-right: 2px solid var(--ink-3); border-bottom: 2px solid var(--ink-3); transform: rotate(-45deg);
+  }
+  .tpl-group[open] > summary::after { transform: rotate(45deg); }
+  .tpl-group > summary:hover { color: var(--navy-ink); }
+  .tpl-item { padding: 0.875rem; border-top: 1px solid var(--line); }
+  .tpl-title { font-weight: 600; }
+  .tpl-desc { color: var(--ink-2); font-size: 0.9375rem; margin: 0.25rem 0 0.75rem; }
+  .tpl-controls { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+  /* 입력칸·버튼 */
+  input[type="text"], textarea {
+    font: inherit; color: var(--ink); background: var(--surface);
+    border: 1px solid var(--line-strong); border-radius: var(--radius);
+  }
+  input[type="text"] { width: 100%; min-height: 2.75rem; padding: 0.5rem 0.625rem; font-size: 1rem; }
+  input[type="text"]::placeholder { color: var(--ink-3); }
+  .combo-wrap { position: relative; flex: 1 1 12rem; min-width: 0; }
+  .combo-list {
+    display: none; position: absolute; left: 0; right: 0; top: calc(100% + 2px); z-index: 10;
+    max-height: 15rem; overflow-y: auto; background: var(--surface);
+    border: 1px solid var(--line-strong); border-radius: var(--radius);
+  }
+  .combo-item { padding: 0.55rem 0.625rem; cursor: pointer; }
+  .combo-item + .combo-item { border-top: 1px solid var(--line); }
+  .combo-item:hover { background: var(--sunk); }
+  .btn, #run-btn {
+    font: inherit; font-weight: 600; min-height: 2.75rem; padding: 0.5rem 1rem;
+    border-radius: var(--radius); cursor: pointer; white-space: nowrap;
+  }
+  .btn { background: var(--surface); color: var(--navy-ink); border: 1px solid var(--navy-ink); }
+  .btn:hover { background: var(--sunk); }
+  #run-btn { background: var(--navy); color: var(--on-navy); border: 1px solid var(--navy); padding-inline: 1.25rem; }
+  #run-btn:hover { background: var(--navy-hover); border-color: var(--navy-hover); }
+
+  /* 쿼리 입력 */
+  .query-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1rem; margin-bottom: 0.5rem; }
+  .query-head .section-title { margin: 0; }
+  .hint { color: var(--ink-3); font-size: 0.875rem; }
+  textarea {
+    display: block; width: 100%; height: 9.5rem; min-height: 5rem; resize: vertical;
+    padding: 0.625rem 0.75rem; font-family: var(--mono); font-size: 0.875rem; line-height: 1.55;
+    background: var(--sunk); tab-size: 2;
+    white-space: pre; overflow-wrap: normal; overflow-x: auto;
+  }
+  .toolbar { scroll-margin-top: 0.75rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin: 0.75rem 0 1.25rem; }
+
+  /* 진행 상태 */
+  .status { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 1.75rem; color: var(--ink-2); font-size: 0.9375rem; }
+  /* 쿼리 실행 중에는 움직이는 표시를 쓰지 않는다(측정 결과 회전 애니메이션이 긴 쿼리를 약 5% 늦춤). */
+  .status.is-busy { color: var(--navy-ink); font-weight: 600; }
+  .status.is-busy::before {
+    content: ""; flex: none; width: 0.55rem; height: 0.55rem; border-radius: 50%;
+    border: 2px solid var(--navy-ink);
+  }
+  .status.is-ok { color: var(--teal-ink); }
+  .status.is-ok::before { content: ""; flex: none; width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--teal); }
+  .status.is-error { color: var(--coral-ink); background: var(--coral-bg); padding: 0.35rem 0.625rem; border-radius: var(--radius); }
+
+  /* 결과 */
+  .result-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 0.625rem; }
+  .result-title { margin: 0; font-size: 1.125rem; line-height: 1.4; font-weight: 700; }
+  .result-sub { color: var(--ink-2); font-size: 0.9375rem; }
+  .result-count { color: var(--ink-2); font-weight: 600; white-space: nowrap; }
+  .result-empty { padding: 1rem; background: var(--surface); border: 1px dashed var(--line-strong); border-radius: 8px; color: var(--ink-2); }
+  .table-wrap { overflow: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+  @media (min-width: 900px) { .table-wrap { max-height: 75vh; } }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+  th, td { padding: 0.55rem 0.75rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+  th { position: sticky; top: 0; z-index: 1; background: var(--sunk); color: var(--ink-2); font-weight: 600; white-space: nowrap; border-bottom-color: var(--line-strong); }
+  td.nw { white-space: nowrap; }
+  tbody tr:nth-child(even) td { background: var(--zebra); }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr:hover td { background: var(--sunk); }
+
+  .site-foot { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--ink-3); font-size: 0.875rem; }
+
+  @media (max-width: 899px) {
+    .page { padding-top: 1rem; }
+    h1 { font-size: 1.3rem; }
+    .logo { height: 38px; }
+    #triple-count { display: none; }
+    .tpl-controls .btn { flex: 1 1 auto; }
   }
 </style>
 </head>
 <body>
-  <h1>진안 학교 전거레코드 — SPARQL 조회 (테스트)</h1>
-  <p class="subtitle">브라우저 내에서 public.ttl을 직접 파싱해 SPARQL로 질의합니다(서버 없음, N3.js + Comunica).</p>
-  <p id="triple-count"></p>
+<div class="page">
+  <header class="site-head">
+    <img class="logo" alt="전북교육" width="41" height="48" src="data:image/webp;base64,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">
+    <div class="head-text">
+      <div class="head-title">
+        <h1>진안 학교 역사 찾아보기</h1>
+        <span class="badge">시험판</span>
+      </div>
+      <p class="subtitle">진안 학교 전거레코드 SPARQL 조회 시연</p>
+    </div>
+    <p id="triple-count"></p>
+  </header>
 
-  <div id="examples"></div>
-  <textarea id="query-box" spellcheck="false"></textarea>
-  <br>
-  <button id="run-btn">쿼리 실행</button>
-  <p id="status" class="status">불러오는 중...</p>
-  <div id="results"></div>
+  <main class="layout">
+    <aside class="side" aria-labelledby="examples-title">
+      <h2 class="section-title" id="examples-title">무엇을 찾아볼까요?</h2>
+      <div id="examples"></div>
+    </aside>
 
-  <script src="./bundle.js"></script>
+    <section id="work" aria-label="쿼리와 결과">
+      <div class="query-head">
+        <label class="section-title" for="query-box">SPARQL 쿼리</label>
+        <span class="hint">직접 고쳐서 실행할 수 있어요 (Ctrl+Enter)</span>
+      </div>
+      <textarea id="query-box" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+      <div class="toolbar" id="toolbar">
+        <button id="run-btn" type="button">쿼리 실행</button>
+        <p id="status" class="status" role="status" aria-live="polite">불러오는 중…</p>
+      </div>
+      <div id="results"></div>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <p>브라우저 안에서 public.ttl을 직접 읽어 조회합니다. 별도 서버를 거치지 않습니다(N3.js, Comunica).</p>
+  </footer>
+</div>
+<script src="./bundle.js"></script>
 </body>
 </html>
